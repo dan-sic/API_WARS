@@ -22,13 +22,48 @@
                 <th scope="col4">Terrain</th>
                 <th scope="col5">Surface Water</th>
                 <th scope="col6">Population</th>
+                <th scope="col7">Residents</th>
             </tr>
             </thead>
-            <tbody data-js="tbody">
+            <tbody data-js="tbody-main">
             </tbody>
         </table>
         <div class="mx-auto" style="width: 200px;" data-js="button-container">
         </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="max-width: 700px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Residents</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col0">Name</th>
+                    <th scope="col1">Height</th>
+                    <th scope="col2">Mass</th>
+                    <th scope="col3">Hair Color</th>
+                    <th scope="col4">Skin color</th>
+                    <th scope="col5">Eye color</th>
+                    <th scope="col6">Birth year</th>
+                    <th scope="col7">Gender</th>
+                </tr>
+                </thead>
+                <tbody data-js="tbody-modal">
+                </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
 

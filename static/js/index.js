@@ -20,10 +20,31 @@ function formatPopulation(num) {
     return newPopulationStr;
 }
 
+
+function displayResidentData(resident, modalTBody) {
+    console.log(resident)
+    const residentRow = `
+            <tr>
+                <th scope="row">${resident.name}</th>
+                <td>${resident.height}</td>
+                <td>${resident.mass}</td>
+                <td>${resident.hair_color}</td>
+                <td>${resident.skin_color}</td>
+                <td>${resident.eye_color}</td>
+                <td>${resident.birth_year}</td>
+                <td>${resident.gender}</td>
+            </tr>
+        `;
+    // modalTBody.innerHTML = '';
+    modalTBody.insertAdjacentHTML('afterbegin', residentRow);
+}
+
+
 function displayTableBody(data) {
-    const tbody = document.querySelector('[data-js="tbody"]');
+    const tbody = document.querySelector('[data-js="tbody-main"]');
     const planets = data.results;
     const table = planets.reduce((s, planet, index) => {
+        const numberOfResidents = planet.residents.length;
         return s + `
             <tr>
                 <th scope="row">${index}</th>
@@ -33,6 +54,13 @@ function displayTableBody(data) {
                 <td>${planet.terrain}</td>
                 <td>${planet.surface_water}</td>
                 <td>${formatPopulation(planet.population)}</td>
+                <td>${ numberOfResidents > 0 ? '<button type="button"' +
+            '                                   class="btn btn-primary"' +
+            '                                   data-toggle="modal"' +
+            '                                   data-target="#exampleModal"' +
+            '                                   data-residents="' + planet.residents + '">'
+                                                + numberOfResidents
+                                                + ' resident(s)</button>' : 'No known residents'}</td>
             </tr>
         `
     }, '');
@@ -95,3 +123,17 @@ function displayTable(url) {
 }
 
 window.addEventListener('DOMContentLoaded', displayTable.bind(null, 'https://swapi.co/api/planets/'));
+
+
+$('#exampleModal').on('show.bs.modal', function (event) {
+    const modalTBody = this.querySelector('[data-js="tbody-modal"]');
+    modalTBody.innerHTML = '';
+    const linkList = event.relatedTarget.dataset.residents.split(',');
+    const listOfPromises = linkList.map(link => fetch(link));
+
+    Promise.all(listOfPromises).then(responses =>
+        Promise.all(responses.map(response => response.json())).then(residents => {
+            residents.forEach(resident => displayResidentData(resident, modalTBody))
+        })
+    )
+});
