@@ -1,6 +1,6 @@
-from flask import Flask, request, json, render_template, url_for, redirect, flash
+from flask import Flask, request, json, render_template, url_for, redirect, flash, session
 from database.data_manager import register_user
-from utils import validate_registration_input
+from utils import validate_registration_input, validate_user
 import psycopg2
 # import requests
 app = Flask(__name__)
@@ -32,14 +32,30 @@ def register():
     return render_template('_register.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        form_data = request.form
+        validated_user = validate_user(form_data)
+
+        if not validated_user:
+            flash(f'Wrong credentials!', 'danger')
+            return redirect('/login')
+
+        session['username'] = form_data.get('username')
+        return redirect('/')
+
+    return render_template('_login.html')
+
+
+
 
     return render_template('_login.html')
 
 
 @app.route('/logout')
 def logout():
+    session.pop('username')
     return redirect('/')
 
 

@@ -10,4 +10,13 @@ def register_user(cursor, form_data):
 
     sql_query = 'insert into users(username, password) values (%(username)s, %(password)s);'
 
-    cursor.execute(sql_query, {'username': username, 'password': hashed_password})
+    cursor.execute(sql_query, {'username': username, 'password': hashed_password.decode('utf-8')})
+
+
+@connection_handler
+def get_user(cursor, username):
+    sql_query = 'select * from users where username=%(username)s;'
+
+    cursor.execute(sql_query, {'username': username})
+
+    return cursor.fetchone()
