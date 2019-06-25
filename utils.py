@@ -1,5 +1,7 @@
 from database.data_manager import get_user
 import bcrypt
+from functools import wraps
+from flask import session, redirect
 
 def validate_registration_input(form_data):
     username = form_data.get('username')
@@ -37,4 +39,11 @@ def validate_user(form_data):
     return True
 
 
+def logged_only(fn):
+    wraps(fn)
+    def wrapper(*args, **kwargs):
+        if not 'username' in session:
+            return redirect('/')
+        return fn(*args, **kwargs)
+    return wrapper
 
