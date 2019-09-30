@@ -1,4 +1,4 @@
-from flask import Flask, request, json, render_template, url_for, redirect, flash, session
+from flask import Flask, request, render_template, redirect, flash, session
 from database.data_manager import register_user
 from utils import validate_registration_input, validate_user, logged_only
 import psycopg2
