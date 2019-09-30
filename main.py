@@ -2,9 +2,10 @@ from flask import Flask, request, json, render_template, url_for, redirect, flas
 from database.data_manager import register_user
 from utils import validate_registration_input, validate_user, logged_only
 import psycopg2
+import os
 # import requests
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '0b95219177b86d8db3fbde38daf944f0'
+app.config['SECRET_KEY'] = os.environ.get('API_KEY')
 
 
 @app.route('/')
